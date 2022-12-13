@@ -1,6 +1,6 @@
-
 function getComputerChoice() {
     let randomNum = Math.floor(Math.random() * 3);
+    console.log('Random Num: ' + randomNum);
     switch(randomNum) {
         case 0:
             return 'Rock';
@@ -13,6 +13,7 @@ function getComputerChoice() {
 
 function play(playerSelection, computerSelection) {
     let outcome = '';
+
     if(/rock/i.test(playerSelection)) {
         switch(computerSelection) {
             case 'Rock':
@@ -56,33 +57,73 @@ function play(playerSelection, computerSelection) {
     return outcome;
 }
 
-function game() {
-    let playerWins = 0;
-    let compWins = 0;
-    confirm('Lets play a game. Rock, Paper, Scissors. Best of five.');
-    for(let i = 0; i < 20; i++) {
-        let choice = prompt("What do you want to choose? Type Rock, Paper, Scissors.");
-        let computerSelection = getComputerChoice();
-        let outcome = play(choice, computerSelection);
-        switch(outcome) {
-            case 'win':
-                alert(`You win! ${choice} beats ${computerSelection}.`);
-                playerWins++;
-                break;
-            case 'lose': 
-                alert(`You lose! ${computerSelection} beats ${choice}.`);
-                compWins++;
-                break;
-            case 'tie':
-                alert(`You tie! You both selected ${computerSelection}.`);
-        }
-        confirm(`The score is currently ${playerWins} to ${compWins}.`);
-        if(playerWins >= 3 || compWins >= 3)
-            break;
+function game(choice) {
+    const h1 = document.querySelector('h1');
+    let computerSelection = getComputerChoice();
+    let outcome = play(choice, computerSelection);
+    console.log('choice: ' + choice + ' CompChoice: ' + computerSelection)
+    switch(outcome) {
+        case 'win':
+            h1.innerHTML = `You win! ${choice} beats ${computerSelection}.`;
+            return 1;
+        case 'lose': 
+            h1.innerHTML = `You lose! ${computerSelection} beats ${choice}.`;
+            return -1;
+        case 'tie':
+            h1.innerHTML = `You tie! You both selected ${computerSelection}.`;
+            return 0;
+
     }
-    if(playerWins > compWins) {
-        alert("Wow! You beat the computer");
-    } else alert("You got beat by the computer :(");
 }
 
-game();
+function container(choice) {
+    let outcome;
+    const p = document.querySelector('.score');
+
+    outcome = game(choice);
+    console.log('outcome: ' + outcome)
+
+    if(outcome === 1) playerScore++;
+    else if(outcome === -1) compScore++;
+
+    console.log('playerScore: ' + playerScore);
+    console.log('compScore: ' + compScore);
+
+    console.log('p' + p);
+    p.innerHTML = `${playerScore}, ${compScore}`;
+
+}
+
+let playerScore = 0;
+let compScore = 0;
+
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors')
+
+rock.addEventListener('click', () => container('Rock'));
+scissors.addEventListener('click', () => container('Scissors'));
+paper.addEventListener('click', () => container('Paper'));
+
+// function game() {
+
+//     const rock = document.querySelector('#rock');
+//     const paper = document.querySelector('#paper');
+//     const scissors = document.querySelector('#scissors')
+
+//     let computerSelection = getComputerChoice();
+
+//     rock.addEventListener('click', () => {
+//         play('rock', computerSelection);
+//     });
+//     scissors.addEventListener('click', () => {
+//         play('scissors', computerSelection);
+//     });
+//     paper.addEventListener('click', () => {
+//         play('paper', computerSelection);
+//     });
+// }
+
+// game();
+
+
